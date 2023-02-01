@@ -13,4 +13,4 @@ const reply = [
     }
 ];
 
-export {reply};
+module.exports = reply;

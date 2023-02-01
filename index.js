@@ -1,10 +1,11 @@
 const Discord = require("discord.js");
-const keepAlive = require("./server")
+// const keepAlive = require("./server")
 // const { SlashCommandBuilder } = require('discord.js');
-const { Client, GatewayIntentBits, Partials } = require('discord.js');
+const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
+// const { ActivityType } = require('discord.js');
 require('dotenv').config();
 const { REST, Routes } = require('discord.js');
-// const reply = require("./reply")
+const { reply} = require("./command")
 
 const client = new Discord.Client({
     intents: [
@@ -14,41 +15,27 @@ const client = new Discord.Client({
     ]
 })
 
-const commands = [
-    {
-        name:'help',
-        description: 'shows all help commands'
-    },
-    {
-        name:'projects',
-        description: 'display all open source projects '
-    },
-    {
-        name:'about',
-        description: 'know about clueless'
-    }
-    
-  ];
-
-
-  const reply = [
-    {
-        command:"help",
-        content:"I am here to help you \n /projects: display all open source projects \n /about: about clueless \n /hackathons: all ongoing hackathons"
-    },
-    {
-        command:"about",
-        content:"Clueless is a student-driven development community built with the vision to make everyone fall in love with Open-source. 💻 We aim to create amazing open-source tools and repositories in every domain of software development. 🚀\n\nNot just another community, here each contribution of yours can make a great impact as it will be leveraged by developers around the world.😉"
-    },
-    {
-        command:"projects",
-        content:"ClueLess Official Website: \n https://github.com/Clueless-Community/clueless-official-website \n \n SeamLess UI: \n https://github.com/Clueless-Community/seamless-ui \n \n First Contribution Website: \n https://github.com/Clueless-Community/first-contribution \n \n College API: \n https://github.com/Clueless-Community/collegeAPI \n \n Prega.io: \n https://github.com/Clueless-Community/Prega \n \n Datasets: \n https://github.com/Clueless-Community/Datasets \n \n Flutter UI Components: \n https://github.com/Clueless-Community/flutter-ui-components \n \n FinTech API: \n https://github.com/Clueless-Community/fintech-api"
-    }
-];
+// client.user.setActivity('activity', { type: ActivityType.Watching });
 
 const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 
-(async () => {
+const commands = [
+  {
+      name:'help',
+      description: 'shows all help commands'
+  },
+  {
+      name:'projects',
+      description: 'display all open source projects '
+  },
+  {
+      name:'about',
+      description: 'know about clueless'
+  }
+  
+];
+
+const slashCmds = (async () => {
     try {
       console.log('Started refreshing application (/) commands.');
   
@@ -58,17 +45,45 @@ const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
     } catch (error) {
       console.error(error);
     }
-  })();
+  });
 
-
+  slashCmds();
 
 
 client.on("ready", () => { console.log(`Logged in as ${client.user.tag}!`)});
 
+const exampleEmbed = new EmbedBuilder()
+	.setColor(0x0099FF)
+	.setTitle('Open Source')
+	.setURL('https://downloadr2.apkmirror.com/wp-content/uploads/2021/06/64/60d43b9abaafc.png')
+	.setAuthor({ name: 'ClueLess', iconURL: 'https://downloadr2.apkmirror.com/wp-content/uploads/2021/06/64/60d43b9abaafc.png', url: 'https://downloadr2.apkmirror.com/wp-content/uploads/2021/06/64/60d43b9abaafc.png' })
+	.setDescription('Demo description')
+	.setThumbnail('https://downloadr2.apkmirror.com/wp-content/uploads/2021/06/64/60d43b9abaafc.png')
+	.addFields(
+		{ name: 'Regular field title', value: 'Some value here' },
+		{ name: '\u200B', value: '\u200B' },
+		{ name: 'Inline field title', value: 'Some value here', inline: true },
+		{ name: 'Inline field title', value: 'Some value here', inline: true },
+	)
+	.addFields({ name: 'Inline field title', value: 'Some value here', inline: true })
+	.setImage('https://downloadr2.apkmirror.com/wp-content/uploads/2021/06/64/60d43b9abaafc.png')
+	.setTimestamp()
+	.setFooter({ text: 'by ClueLess', iconURL: 'https://downloadr2.apkmirror.com/wp-content/uploads/2021/06/64/60d43b9abaafc.png' });
+
 client.on('messageCreate', (message) => {
     // console.log(message.content);
     // reads the user message content
+    // message.reply("hello");
+    if (message.content === 'hello'){
+      message.reply("Hello buddy, how are you?")
+      message.channel.send({ embeds: [exampleEmbed] });
+    }
+
 })
+
+
+
+
 
 // slash commands
 client.on('interactionCreate', async interaction => {
@@ -86,6 +101,6 @@ client.on('interactionCreate', async interaction => {
     
   });
 
-  keepAlive()
+  // keepAlive()
 
 client.login(process.env.TOKEN);
