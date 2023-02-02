@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-// const keepAlive = require("./server")
 // const { SlashCommandBuilder } = require('discord.js');
 const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 // const { ActivityType } = require('discord.js');
@@ -69,6 +68,7 @@ const exampleEmbed = new EmbedBuilder()
 	.setImage('https://downloadr2.apkmirror.com/wp-content/uploads/2021/06/64/60d43b9abaafc.png')
 	.setTimestamp()
 	.setFooter({ text: 'by ClueLess', iconURL: 'https://downloadr2.apkmirror.com/wp-content/uploads/2021/06/64/60d43b9abaafc.png' });
+  // dont leave any url field null
 
 client.on('messageCreate', (message) => {
     // console.log(message.content);
@@ -76,14 +76,12 @@ client.on('messageCreate', (message) => {
     // message.reply("hello");
     if (message.content === 'hello'){
       message.reply("Hello buddy, how are you?")
+    }
+    if (message.content === 'embed'){
       message.channel.send({ embeds: [exampleEmbed] });
     }
 
 })
-
-
-
-
 
 // slash commands
 client.on('interactionCreate', async interaction => {
