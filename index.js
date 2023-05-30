@@ -51,24 +51,24 @@ const slashCmds = (async () => {
 
 client.on("ready", () => { console.log(`Logged in as ${client.user.tag}!`)});
 
-const exampleEmbed = new EmbedBuilder()
+const projectsEmbed = new EmbedBuilder()
 	.setColor(0x0099FF)
-	.setTitle('Open Source')
-	.setURL('https://downloadr2.apkmirror.com/wp-content/uploads/2021/06/64/60d43b9abaafc.png')
-	.setAuthor({ name: 'ClueLess', iconURL: 'https://downloadr2.apkmirror.com/wp-content/uploads/2021/06/64/60d43b9abaafc.png', url: 'https://downloadr2.apkmirror.com/wp-content/uploads/2021/06/64/60d43b9abaafc.png' })
-	.setDescription('Demo description')
-	.setThumbnail('https://downloadr2.apkmirror.com/wp-content/uploads/2021/06/64/60d43b9abaafc.png')
+	.setTitle('Open Source Projects')
+	.setURL('https://github.com/Clueless-Community')
+	.setAuthor({ name: 'ClueLess', iconURL: 'https://www.clueless.tech/ClueLess%20Logo.png', url: 'https://www.clueless.tech/' })
+	.setDescription('Here are the open-source where you guys can contribute.')
 	.addFields(
-		{ name: 'Regular field title', value: 'Some value here' },
-		{ name: '\u200B', value: '\u200B' },
-		{ name: 'Inline field title', value: 'Some value here', inline: true },
-		{ name: 'Inline field title', value: 'Some value here', inline: true },
+    // { name: '\u200B', value: '\u200B' },
+		{ name: '- ClueLess Official Website', value: 'This is Clueless official website where you can make your developer profile as well as meet new people across the world. \n \n 🔗 - https://github.com/Clueless-Community/clueless-official-website\n \n'  },
+	 // add a blank field to the embed
+		{ name: '- SeamLess UI', value: 'This is a Web UI Kit made with simple HTML and Tailwind CSS. You can use them in any of your projects, be it a simple HTML, CSS static website or a React, Vue, Angular or Next.js Complex app. \n \n 🔗 - https://github.com/Clueless-Community/seamless-ui\n \n' },
+		{ name: '- First Contribution Website', value: 'A repo where you can make your first contribution and get a contributors card in our website. \n \n 🔗 - https://github.com/Clueless-Community/first-contribution' },
+		
 	)
-	.addFields({ name: 'Inline field title', value: 'Some value here', inline: true })
-	.setImage('https://downloadr2.apkmirror.com/wp-content/uploads/2021/06/64/60d43b9abaafc.png')
+	.addFields({ name: 'Inline field title', value: 'Some value here', })
+	.setImage('https://blog.hyperiondev.com/wp-content/uploads/2018/11/Blog-GitHub.jpg')
 	.setTimestamp()
-	.setFooter({ text: 'by ClueLess', iconURL: 'https://downloadr2.apkmirror.com/wp-content/uploads/2021/06/64/60d43b9abaafc.png' });
-  // dont leave any url field null
+	.setFooter({ text: 'by ClueLess', iconURL: 'https://www.clueless.tech/ClueLess%20Logo.png' });
 
 client.on('messageCreate', (message) => {
     // console.log(message.content);
@@ -77,8 +77,8 @@ client.on('messageCreate', (message) => {
     if (message.content === 'hello'){
       message.reply("Hello buddy, how are you?")
     }
-    if (message.content === 'embed'){
-      message.channel.send({ embeds: [exampleEmbed] });
+    if (message.content === 'projects'){
+      message.channel.send({ embeds: [projectsEmbed] });
     }
 
 })
@@ -102,3 +102,4 @@ client.on('interactionCreate', async interaction => {
   // keepAlive()
 
 client.login(process.env.TOKEN);
+
