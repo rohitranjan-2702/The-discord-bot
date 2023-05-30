@@ -1,12 +1,11 @@
-const Discord = require("discord.js");
-// const { SlashCommandBuilder } = require('discord.js');
-const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
-// const { ActivityType } = require('discord.js');
-require('dotenv').config();
-const { REST, Routes } = require('discord.js');
-const { reply} = require("./command")
+import { Client as _Client } from "discord.js";
+import { Client, GatewayIntentBits, EmbedBuilder } from 'discord.js';
+import { REST, Routes } from 'discord.js';
+import reply from "./src/command.js";
 
-const client = new Discord.Client({
+import {} from 'dotenv/config.js'
+
+const client = new _Client({
     intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
@@ -37,10 +36,9 @@ const commands = [
 const slashCmds = (async () => {
     try {
       console.log('Started refreshing application (/) commands.');
-  
       await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), { body: commands });
-  
       console.log('Successfully reloaded application (/) commands.');
+      
     } catch (error) {
       console.error(error);
     }
@@ -99,7 +97,7 @@ client.on('interactionCreate', async interaction => {
     
   });
 
-  // keepAlive()
+// keepAlive()
 
 client.login(process.env.TOKEN);
 
