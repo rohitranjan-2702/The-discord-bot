@@ -1,6 +1,7 @@
 import { Client as _Client } from "discord.js";
 import { Client, GatewayIntentBits, EmbedBuilder } from "discord.js";
 import { REST, Routes } from "discord.js";
+import reply from "./src/command.js";
 import fetch from "node-fetch";
 
 import {} from "dotenv/config.js";
@@ -24,10 +25,6 @@ const commands = [
   },
   {
     name: "projects",
-    description: "display all open source projects",
-  },
-  {
-    name: "projectss",
     description: "display all open source projects",
   },
   {
@@ -135,9 +132,6 @@ client.on("interactionCreate", async (interaction) => {
     await interaction.reply(reply[1].content);
   }
   if (interaction.commandName === "projects") {
-    await interaction.reply(reply[2].content);
-  }
-  if (interaction.commandName === "projectss") {
     await interaction.reply(reposData);
   }
 });
