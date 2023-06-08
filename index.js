@@ -31,6 +31,10 @@ const commands = [
     name: "about",
     description: "know about clueless",
   },
+  {
+    name: "dashboard",
+    description: "github dashboard",
+  },
 ];
 
 const slashCmds = async () => {
@@ -109,6 +113,7 @@ const projectsEmbed = new EmbedBuilder()
     iconURL: "https://www.clueless.tech/ClueLess%20Logo.png",
   });
 
+//  custom respond on message
 client.on("messageCreate", (message) => {
   // console.log(message.content);
   // reads the user message content
@@ -116,13 +121,14 @@ client.on("messageCreate", (message) => {
   if (message.content === "hello") {
     message.reply("Hello buddy, how are you?");
   }
-  if (message.content === "projects") {
+  if (message.content === "Clueless") {
     message.channel.send({ embeds: [projectsEmbed] });
   }
 });
 
 // slash commands
 client.on("interactionCreate", async (interaction) => {
+  // console.log(interaction); // the interaction object
   if (!interaction.isChatInputCommand()) return;
 
   if (interaction.commandName === "help") {
@@ -133,6 +139,81 @@ client.on("interactionCreate", async (interaction) => {
   }
   if (interaction.commandName === "projects") {
     await interaction.reply(reposData);
+  }
+  // generate github dasboard from the username of member
+  if (interaction.commandName === "dashboard") {
+    await interaction.reply("Enter your github username").then(() => {
+      const collector = interaction.channel.createMessageCollector({
+        // filter: collectorFilter,
+        time: 15000,
+      });
+
+      let githubData = [];
+      let username = "";
+
+      collector.on("collect", async (m) => {
+        // console.log(`Collected ${m.content}`); // message content given by user
+        username = m.content;
+      });
+
+      collector.on("end", async (collected) => {
+        // console.log(`Collected ${collected.size} items`);
+        const response = await fetch(
+          `https://api.github.com/users/${username}`
+        );
+        const data = await response.json();
+
+        githubData.push(data);
+
+        const followers = githubData[0].followers;
+        const following = githubData[0].following;
+        const public_repos = githubData[0].public_repos;
+        const blog = githubData[0].blog;
+
+        // console.log(followers);
+
+        // console.log(data);
+        // console.log(githubData[0]);
+        const dashboardEmbed = new EmbedBuilder()
+          .setColor(0x0099ff)
+          .setTitle(githubData[0].name)
+          .setURL(githubData[0].html_url)
+          .setAuthor({
+            name: "Github Dashboard",
+            iconURL: githubData[0].avatar_url,
+            url: githubData[0].html_url,
+          })
+          .setDescription(githubData[0].bio)
+          .addFields(
+            // { name: '\u200B', value: '\u200B' },
+            {
+              name: "Website",
+              value: `${blog}`,
+            },
+            {
+              name: "Following",
+              value: `${following}`,
+            },
+            {
+              name: "Followers",
+              value: `${followers}`,
+            },
+            {
+              name: "Public Repositories",
+              value: `${public_repos}`,
+            }
+          )
+          // .addFields({ name: "Inline field title", value: "Some value here" })
+          .setImage(
+            "https://blog.hyperiondev.com/wp-content/uploads/2018/11/Blog-GitHub.jpg"
+          )
+          .setTimestamp()
+          .setFooter({
+            text: "by RoHiT",
+          });
+        interaction.channel.send({ embeds: [dashboardEmbed] });
+      });
+    });
   }
 });
 
